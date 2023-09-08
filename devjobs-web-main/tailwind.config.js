@@ -6,8 +6,8 @@ export default {
   ],
   theme: {
     fontFamily : {
-      sans: ['Open Sans', sans-serif],
-      poppins : ['Poppins', sans-serif],
+      openSans: ['Open Sans', 'sans-serif'],
+      poppins : ['Poppins', 'sans-serif'],
     },
     colors : {
       'white' : '#ffffff',
