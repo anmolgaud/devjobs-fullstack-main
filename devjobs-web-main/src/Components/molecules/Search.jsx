@@ -1,16 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import searchIcon from '/icons/icon-search.svg';
 import locationIcon from '/icons/icon-location.svg';
 
 const Search = (props) => {
     const {setQuery} = props;
     const [search, setSearch] = useState('');
-    const [location, setLocation] = useState('');
-    const [FullTime, setFullTime] = useState('');
-
     const handleSubmit = () =>{
-        console.log(FullTime);
-        setQuery([search, location, FullTime]);
+      setQuery(search);
     }
 
   return (
@@ -32,7 +28,7 @@ const Search = (props) => {
           type="text"
           name="location"
           placeholder="Filter by location..."
-          onChange={(e) => setLocation(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
       <div className="flex justify-between px-2 py-4">
@@ -43,7 +39,7 @@ const Search = (props) => {
             type="checkbox"
             name="contract"
             value = "full time"
-            onChange={(e) => setFullTime(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <label className="ml-2 font-semibold">
             Full Time Only
