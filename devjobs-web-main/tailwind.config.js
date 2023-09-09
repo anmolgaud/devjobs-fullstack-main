@@ -9,15 +9,19 @@ export default {
       openSans: ['Open Sans', 'sans-serif'],
       poppins : ['Poppins', 'sans-serif'],
     },
-    colors : {
-      'white' : '#ffffff',
-      'offWhite' : '#eeeeee',
-      'darkOffWhite' : '#d4d4d4',
-      'lightGray' : '#37414f',
-      'darkGray' : '#222831',
-      'blue' : '#0092ca',
+    // colors : {
+    //   'white' : '#ffffff',
+    //   'offWhite' : '#eeeeee',
+    //   'darkOffWhite' : '#d4d4d4',
+    //   'lightGray' : '#37414f',
+    //   'darkGray' : '#222831',
+    //   'blue' : '#0092ca',
+    // },
+    extend: {
+      backgroundImage : {
+        'header-full' : "url('/desktop/bg-pattern-header.svg')",
+      }
     },
-    extend: {},
   },
   plugins: [],
 }
