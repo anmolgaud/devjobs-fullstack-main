@@ -9,7 +9,12 @@ const Navbar = () => {
             <Link to='/'>
             <img alt='logo' src={logo} />
             </Link>
-            <ToggleMode />
+            
+            <div className='grid grid-cols-3'>
+              <ToggleMode />
+              <Link className='text-lg text-white' to={'login'}>Login</Link>
+              <Link className='text-lg text-white' to={'signup'}>SignUp</Link>
+            </div>
         </div>
     </nav>
   )
