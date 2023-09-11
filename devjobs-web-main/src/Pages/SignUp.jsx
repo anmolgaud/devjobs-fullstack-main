@@ -15,8 +15,8 @@ const SignUp = () => {
 
   return (
     <main className="mx-64">
-      <section className="mx-64 bg-white rounded-md shadow-lg">
-      <div className="py-4 text-lg font-poppins mt-32 rounded-t-md bg-indigo-500 flex items-center justify-center">
+      <section className="mx-64 mt-16 bg-white rounded-md shadow-lg">
+      <div className="py-4 text-lg font-poppins rounded-t-md bg-indigo-500 flex items-center justify-center">
         <h1 className="text-slate-50 text-2xl font-semibold">Sign Up</h1>
       </div>
 
