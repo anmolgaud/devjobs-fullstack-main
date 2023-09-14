@@ -1,4 +1,5 @@
 import React from 'react';
+import formatDate from '../../utils/formatDate'
 import {FaCircle} from 'react-icons/fa';
 import {Link} from 'react-router-dom';
 
@@ -12,26 +13,12 @@ const CompanyCard = (props) => {
       location,
     } = props;
 
-    const currDate = new Date();
-    const postedDate = new Date(postedAt);
-
-    const formatDate = () => {
-      const hr = 60*60*1000;
-      const hoursPassed = Math.round((currDate.getTime() - postedDate.getTime()) / hr);
-      if(hoursPassed < 23){
-        return `${hoursPassed}h ago`;
-      }
-      else{
-        return `${Math.round((hoursPassed) / 24)} Days ago`;
-      }
-    }
-
   return (
       <Link to={`company/${_id}`}>
         <div className="bg-slate-50 rounded-lg relative">
             <div className="p-6 font-openSans relative">
             <div className="text-gray-400 flex items-center text-lg mt-6">
-                <p className='mr-2'>{formatDate()}</p>
+                <p className='mr-2'>{formatDate(postedAt)}</p>
                 <FaCircle size={'0.5rem'} />
                 <p className='ml-2'>{contract}</p>
             </div>

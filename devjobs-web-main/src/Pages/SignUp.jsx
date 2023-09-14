@@ -4,15 +4,15 @@ import axios from 'axios';
 import {AiFillEye, AiFillEyeInvisible} from 'react-icons/ai';
 import { useState } from "react";
 import {useForm} from 'react-hook-form';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [visible, setVisible] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    watch,
-    clearErrors,
     formState: { errors },
   } = useForm();
 
@@ -23,12 +23,12 @@ const SignUp = () => {
   const onSubmit = async (data) => {
     try {
       const res = await axios.post('http://localhost:3000/auth/signup', data);
-      console.log(res);
+      if(res.status === 201)
+        navigate('/')
     } catch (error) {
-      console.log(error);
+      setErrorMsg(error.response.data.message);
     }
   }
-
 
   return (
     <main className="mx-64">
@@ -77,7 +77,8 @@ const SignUp = () => {
         />
         </div>
         {errors.email && <p className="text-xs pl-4 text-red-500 self-start">Invalid email</p>}
-        
+        {errorMsg !== "" && <p className=" text-xs pl-4 self-start text-red-500">{errorMsg}</p>}
+
         <div className="mt-3 flex items-center w-full px-4 border-2 border-indigo-300 rounded-md">
         <input
           className="w-full h-10 max-h-12 rounded-sm outline-none"

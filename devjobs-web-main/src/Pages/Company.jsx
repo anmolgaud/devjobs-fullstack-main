@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { FaCircle } from 'react-icons/fa';
-import list from '../data.json';
+import MoonLoader from 'react-spinners/MoonLoader';
 import axios from 'axios';
+import formatDate from '../utils/formatDate';
 const Company = () => {
   const {id} = useParams();
   const [fetched, setFetched] = useState(false);
@@ -13,7 +14,6 @@ const Company = () => {
       if(res){
         setCompanyObj(res.data[0]);
         setFetched(true);
-        console.log(res.data[0]);
       }
     } catch (error) {
       console.log(error);
@@ -47,10 +47,8 @@ const Company = () => {
   };
   if(!fetched){
     return (
-      <main>
-        <section className='mx-64 mt-8 bg-white grid grid-cols-5 rounded-xl'>
-          <h3>Sorry! company not found!</h3>
-        </section>
+      <main className='flex mt-64 items-center justify-center'>
+        <MoonLoader color='#4338ca' speedMultiplier={0.7}/>
       </main>
     )
   }
@@ -59,7 +57,7 @@ const Company = () => {
       <main className=''>
         <section className='mx-64 mt-8 bg-white grid grid-cols-5 rounded-xl'>
           <div style={divStyle} className='col-end-2 flex items-center justify-center p-6 rounded-bl-xl'>
-            <img className='w-[50%]' alt='company logo' src={logo} />
+            <img className='w-[50%]' alt='company logo' src={`http://localhost:3000/${logo}`} />
           </div>
           <div className='col-start-2 col-end-6 flex justify-between w-full py-8 px-8'>
             <div>
@@ -74,7 +72,7 @@ const Company = () => {
   
         <section className="mx-64 p-8 bg-slate-50 rounded-md mt-8">
           <div className="text-gray-400 flex items-center text-lg">
-            <p className="mr-4">{postedAt}</p>
+            <p className="mr-4">{formatDate(postedAt)}</p>
             <FaCircle size={"0.4rem"} />
             <p className="ml-4">{contract}</p>
           </div>

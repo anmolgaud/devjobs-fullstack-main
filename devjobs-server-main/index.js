@@ -14,8 +14,10 @@ const app = express();
 
 //middlewares
 app.use(cors())
+app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended : false}))
 app.use(express.json());
+
 
 //routes
 app.use('/auth', authRoutes);;

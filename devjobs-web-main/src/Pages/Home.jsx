@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import CompanyCard from '../Components/atoms/CompanyCard'
 import Search from '../Components/molecules/Search';
-import companyList from '../data.json';
+import MoonLoader from 'react-spinners/MoonLoader';
 const Home = () => {
   const [query, setQuery] = useState("");
   const [list, setList] = useState([]);
+  const [fetched, setFetched] = useState(false);
   const fetchList = async () => {
     try {
       const res = await axios.get('http://localhost:3000/jobs/getAllJobs');
       setList(res.data);
+      setFetched(true);
     } catch (error) {
       console.log(res);
     }
@@ -17,9 +19,16 @@ const Home = () => {
 
   useEffect(() => {
     fetchList();
-  }, []);
-  
-  return (
+  }, [fetched,]);
+
+  if(!fetched){
+    return(
+      <main className='flex mt-32 items-center justify-center'>
+        <MoonLoader color='#4338ca' speedMultiplier={0.7}/>
+      </main>
+    )
+  }
+  else return (
     <main className="mx-32 relative">
       <div className="w-full mt-8">
         <Search setQuery={setQuery}/>

@@ -17,7 +17,10 @@ const register = async (req, res) =>{
         const token = jwt.sign({email, passwordHash}, process.env.JWTSECRET, {expiresIn : '2h'});
         res.status(201).json({'message' : 'Sign up successful', 'token' : token});
     } catch (error) {
-        console.log(error);
+        if(error.code == '11000'){
+            res.status(400).json({'message' : 'Email already exists'});
+            return;
+        }
         res.status(500).json({'message' : 'Something went wrong'})
     }
 };
