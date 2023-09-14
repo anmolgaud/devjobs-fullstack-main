@@ -1,27 +1,24 @@
 import React, { useEffect, useState } from 'react'
+import axios from 'axios';
 import CompanyCard from '../Components/atoms/CompanyCard'
 import Search from '../Components/molecules/Search';
 import companyList from '../data.json';
 const Home = () => {
-  const [query, setQuery] = useState('');
-  const [list, setList] = useState(companyList);
-  useEffect(() =>{
-    if(query == '')
-      setList(companyList);
-    else{
-      let temp = [];
-    temp = list.filter((item) => {
-      return (
-        item.company.toLowerCase().includes(query)  ||
-        item.position.toLowerCase().includes(query) ||
-        item.location.toLowerCase().includes(query) ||
-        item.contract.toLowerCase().includes(query)
-      );
-    })
-    setList(temp);
+  const [query, setQuery] = useState("");
+  const [list, setList] = useState([]);
+  const fetchList = async () => {
+    try {
+      const res = await axios.get('http://localhost:3000/jobs/getAllJobs');
+      setList(res.data);
+    } catch (error) {
+      console.log(res);
     }
-  }, [query,])
+  }
 
+  useEffect(() => {
+    fetchList();
+  }, []);
+  
   return (
     <main className="mx-32 relative">
       <div className="w-full mt-8">
@@ -30,7 +27,7 @@ const Home = () => {
       <div className="mt-8">
         <ul className="grid grid-cols-3 gap-8">
           {list.map((item) => (
-              <li className="relative" key={item.id}>
+              <li className="relative" key={item._id}>
                 <CompanyCard {...item} />
               </li>
             ))}

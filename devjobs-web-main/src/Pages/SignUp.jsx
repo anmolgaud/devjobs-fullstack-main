@@ -1,4 +1,6 @@
 import React from "react";
+import axios from 'axios';
+
 import {AiFillEye, AiFillEyeInvisible} from 'react-icons/ai';
 import { useState } from "react";
 import {useForm} from 'react-hook-form';
@@ -6,12 +8,27 @@ import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const [visible, setVisible] = useState(false);
-    const {register, handleSubmit, watch, clearErrors, formState:{errors}} = useForm();
-    const handleVisible = () => {
-        setVisible(!visible);
-    }
+  const {
+    register,
+    handleSubmit,
+    watch,
+    clearErrors,
+    formState: { errors },
+  } = useForm();
 
-    const onSubmit = (data) => console.log(data);
+  const handleVisible = () => {
+    setVisible(!visible);
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios.post('http://localhost:3000/auth/signup', data);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   return (
     <main className="mx-64">
