@@ -2,25 +2,40 @@ import React from 'react'
 import {useForm, useFieldArray,} from 'react-hook-form';
 
 const AddJob = () => {
-  const {register, handleSubmit, control, formState:{errors}} = useForm({
-    defaultValues: {
-      company: '',
-      postion: '',
-      location: '',
-      website: '',
-      apply: '',
-      description : '',
-      requirements : {
-        content : '',
-        items : [],
-      }
-    }
-  });
+  const {register, handleSubmit, control, formState:{errors}} = useForm();
 
   const {fields : reqFields, append : reqAppend, remove:reqRemove} = useFieldArray({control, name: "requirements.items"});
   const {fields : roleFields, append : roleAppend, remove: roleRemove} = useFieldArray({control, name:"role.items"});
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const formData = new FormData()
+    const reqItemList = [];
+    const roleItemList = [];
+    
+    data.requirements.items.map((item) => reqItemList.push(item.value));
+    data.role.items.map((item) => roleItemList.push(item.value));
+
+    data.requirements.items = reqItemList;
+    data.role.items = roleItemList;
+
+    console.log(data);
+    Object.keys(data).map((item) => {
+      if(item === 'requirements' || item === 'role'){
+        formData.append(item, JSON.stringify(data[item]));
+      }
+      else if(item !== 'file'){
+        formData.append(item, data[item]);
+      }
+    })
+    formData.append('file', data.file[0]);
+    formData.append('logo', data.file[0].name);
+
+    const res = await fetch("http://localhost:3000/admin/addJob", {
+        method: "POST",
+        body: formData,
+      }).then((res) => res.json());
+      alert(JSON.stringify(`${res.message}, status: ${res.status}`));
+  }
   
   return (
     <section className="mx-64 mt-4 mb-8 bg-white rounded-md p-8">
@@ -51,16 +66,50 @@ const AddJob = () => {
           </div>
         </div>
 
+        <div className="mt-8 grid grid-cols-6 ">
+          <div className="col-span-3">
+            <label className="font-medium leading-6" htmlFor="company">
+              Logo
+            </label>
+            <div className="mt-2 pl-2 flex rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+              <input
+                className="block outline-none flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0"
+                {...register("file")}
+                type="file"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 grid grid-cols-6 ">
+          <div className="col-span-3">
+            <label className="font-medium leading-6" htmlFor="company">
+              Position
+            </label>
+            <div className="mt-2 pl-2 flex rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+              <input
+                className="block outline-none flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0"
+                {...register("position", { required: true })}
+                type="text"
+                placeholder="Senior Dev"
+              />
+            </div>
+            {errors.position && (
+              <p className="text-xs text-red-500">Required!</p>
+            )}
+          </div>
+        </div>
+
         <div className="mt-2 grid grid-cols-6">
           <div className="col-span-2">
             <label className="font-medium leading-6" htmlFor="position">
-              Position
+              Contract
             </label>
             <div className="mt-2 p-2 flex rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
               <select
                 className="block outline-none flex-1"
-                {...register("position", { required: true })}
-                id="position"
+                {...register("contract", { required: true })}
+                id="contract"
               >
                 <option value="Full Time">Full Time</option>
                 <option value="Part Time">Part Time</option>
@@ -216,7 +265,7 @@ const AddJob = () => {
         <div className="mt-2 grid grid-cols-8">
           <div className="col-span-7">
             <label className="font-medium leading-6" htmlFor="location">
-              Roles List <span className='italic font-light'>(optional)</span>
+              Tasks List <span className='italic font-light'>(optional)</span>
             </label>
             <ul className=''>
                 {roleFields.map((item, index) => (

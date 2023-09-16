@@ -4,7 +4,19 @@ const Jobs = require('../Models/Jobs');
 const addJob = async (req, res) => {
     try {
         const data = req.body;
-        const newJob = await Jobs.create(data);
+        const jobData = {};
+        Object.keys(data).map((item) => {
+            if(item === 'requirements' || item === 'role'){
+                jobData[item] = JSON.parse(data[item]);
+            }
+            else if(item === 'logo'){
+                jobData[item] = '/logos/' + data[item];
+            }
+            else{
+                jobData[item] = data[item];
+            }
+        })
+        const newJob = await Jobs.create(jobData);
         if(!newJob){
             res.status(400).json({'message' : 'Database Error'});
             return;

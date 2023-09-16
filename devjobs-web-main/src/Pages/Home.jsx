@@ -7,10 +7,12 @@ const Home = () => {
   const [query, setQuery] = useState("");
   const [list, setList] = useState([]);
   const [fetched, setFetched] = useState(false);
+
   const fetchList = async () => {
     try {
       const res = await axios.get('http://localhost:3000/jobs/getAllJobs');
-      setList(res.data);
+      const jobList = res.data;
+      setList(jobList);
       setFetched(true);
     } catch (error) {
       console.log(res);
